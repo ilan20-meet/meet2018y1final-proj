@@ -25,7 +25,7 @@ UP_EDGE = 300
 DOWN_EDGE = -300
 RIGHT_EDGE = 300
 LEFT_EDGE = -300
-direction = RIGHT
+direction = LEFT 
 
 gun1 = turtle.clone()
 #gun2 = turtle.clone()
@@ -108,8 +108,8 @@ def move_man():
 def left():
     global direction 
     direction=LEFT 
-    move_man()
     print("You pressed the left key!")
+    move_man()
 def right():
     global direction 
     direction=RIGHT 
@@ -118,7 +118,7 @@ def right():
     
 
 turtle.onkeypress(right,RIGHT_ARROW) # Create listener for up key
-turtle.onkeypress(left, LEFT_ARROW) # Create listener for up key
+turtle.onkeypress(left,LEFT_ARROW) # Create listener for up key
 turtle.listen()
 make_bottle()
 while True:
