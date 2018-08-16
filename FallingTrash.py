@@ -3,8 +3,22 @@ import random
 import time
 
 turtle.bgpic("env.gif")
+score = 0
+scoreTurtle=turtle.clone()
+scoreTurtle.hideturtle()
+scoreTurtle.penup()
+scoreTurtle.goto(480,450)
+scoreTurtle.write(int(score),align="center",font=("times",33,"bold"))
+
+game_over=turtle.clone()
+game_over.hideturtle()
+game_over.penup()
+game_over.goto(0,0)
+
+
 
 turtle.register_shape("bottle.gif")
+
 SQUARE_SIZE = 20
 
 man=turtle.clone()
@@ -12,10 +26,10 @@ turtle.hideturtle()
 
 turtle.register_shape("man.gif")
 man.shape("man.gif")
-turtle.setup(1900,1000)
-
+turtle.setup(1000,1000)
 man.penup()
 man.goto(0,-150)
+
 turtle.tracer(1,0)
 LEFT_ARROW = "Left" 
 RIGHT_ARROW = "Right" 
@@ -26,6 +40,15 @@ DOWN_EDGE = -300
 RIGHT_EDGE = 300
 LEFT_EDGE = -300
 direction = LEFT 
+
+fire=turtle.clone()
+turtle.register_shape("fire.gif")
+fire.shape("fire.gif")
+fire.penup()
+fire.showturtle()
+fire.goto(0,-490)
+
+
 
 gun1 = turtle.clone()
 #gun2 = turtle.clone()
@@ -61,30 +84,30 @@ def up():
     gun1.showturtle()
     gun1.forward(1000)
     
-
-
+z=0
+difficulty=0.1
 num_bottle=0
 max_bottle=8
 bottle_list=[]
 def make_bottle():  #need to make a few at a time
     for num_bottle in range(max_bottle):
-        random_x=random.randint(-940,940)
+        random_x=random.randint(-470,470)
         bottle=turtle.clone()
         bottle.speed(0)
         bottle.hideturtle()
         bottle.penup()
         bottle.shape("bottle.gif")
-        bottle.goto(random_x,450)
+        bottle.goto(random_x,480)
         bottle_list.append(bottle)
         bottle.showturtle()
-        bottle.speed(8)
+        bottle.speed(10)
     
     
 def move_bottle():
     random_bottle=random.randint(0,max_bottle-1)
     bottle=bottle_list[random_bottle]
     bottle.goto(bottle.pos()[0],bottle.pos()[1]- SQUARE_SIZE)
-    time.sleep(.1)        
+    time.sleep(difficulty)        
 
 old_stamp="not set"
 
@@ -126,22 +149,29 @@ while True:
    
     turtle.onkeypress(up,SPACE)
     for bottle in bottle_list:
-        if  bottle.pos()[1] < -150:
+        if  bottle.pos()[1] < -410:
+            game_over.write("Great Job ! You Recycle " + str(score) + " bottles",align="center",font=("times",33,"bold"))
             quit()
         if  gun1.pos()[0] < bottle.pos()[0] + 30 and gun1.pos()[0] > bottle.pos()[0] - 30 and gun1.pos()[1] > bottle.pos()[1] - 30:
             bottle_list.remove(bottle)
             bottle.hideturtle()
+            score+=1
+            scoreTurtle.clear()
+            scoreTurtle.write(int(score),align="center",font=("times",33,"bold"))
         if len(bottle_list) < max_bottle:
-            random_x=random.randint(-940,940)
+            random_x=random.randint(-470,470)
             bottle=turtle.clone()
             bottle.speed(0)
             bottle.hideturtle()
             bottle.penup()
             bottle.shape("bottle.gif")
-            bottle.goto(random_x,450)
+            bottle.goto(random_x,480)
             bottle_list.append(bottle)
             bottle.showturtle()
             bottle.speed(8)    
+        if score - z >= 10:
+            difficulty-=0.025
+            z=z+10
         move_bottle()
 
 turtle.mainloop()
